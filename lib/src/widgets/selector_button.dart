@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl_phone_number_input/src/models/country_model.dart';
+import 'package:intl_phone_number_input/src/utils/bottom_sheet_config.dart';
 import 'package:intl_phone_number_input/src/utils/selector_config.dart';
 import 'package:intl_phone_number_input/src/utils/test/test_helper.dart';
 import 'package:intl_phone_number_input/src/widgets/countries_search_list_widget.dart';
@@ -17,7 +18,7 @@ class SelectorButton extends StatelessWidget {
   final String? locale;
   final bool isEnabled;
   final bool isScrollControlled;
-  final bool useRootNavigatorForBottomSheet;
+  final BottomSheetConfig bottomSheetConfig;
 
   final ValueChanged<Country?> onCountryChanged;
 
@@ -33,7 +34,7 @@ class SelectorButton extends StatelessWidget {
     required this.onCountryChanged,
     required this.isEnabled,
     required this.isScrollControlled,
-    required this.useRootNavigatorForBottomSheet,
+    required this.bottomSheetConfig,
   }) : super(key: key);
 
   @override
@@ -147,7 +148,7 @@ class SelectorButton extends StatelessWidget {
   Future<Country?> showCountrySelectorBottomSheet(
       BuildContext inheritedContext, List<Country> countries) {
     return showModalBottomSheet(
-      useRootNavigator: useRootNavigatorForBottomSheet,
+      useRootNavigator: bottomSheetConfig.useRootNavigator,
       context: inheritedContext,
       clipBehavior: Clip.hardEdge,
       isScrollControlled: isScrollControlled,
@@ -164,6 +165,10 @@ class SelectorButton extends StatelessWidget {
             padding: EdgeInsets.only(
                 bottom: MediaQuery.of(context).viewInsets.bottom),
             child: DraggableScrollableSheet(
+              initialChildSize: bottomSheetConfig.initialChildSize,
+              maxChildSize: bottomSheetConfig.maxChildSize,
+              minChildSize: bottomSheetConfig.minChildSize,
+              snap: bottomSheetConfig.snap,
               builder: (BuildContext context, ScrollController controller) {
                 return Directionality(
                   textDirection: Directionality.of(inheritedContext),

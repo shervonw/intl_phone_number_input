@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:intl_phone_number_input/src/models/country_list.dart';
 import 'package:intl_phone_number_input/src/models/country_model.dart';
 import 'package:intl_phone_number_input/src/providers/country_provider.dart';
+import 'package:intl_phone_number_input/src/utils/bottom_sheet_config.dart';
 import 'package:intl_phone_number_input/src/utils/formatter/as_you_type_formatter.dart';
 import 'package:intl_phone_number_input/src/utils/phone_number.dart';
 import 'package:intl_phone_number_input/src/utils/phone_number/phone_number_util.dart';
@@ -37,6 +38,7 @@ enum PhoneInputSelectorType { DROPDOWN, BOTTOM_SHEET, DIALOG }
 /// available countries to match the [countries] specified.
 class InternationalPhoneNumberInput extends StatefulWidget {
   final SelectorConfig selectorConfig;
+  final BottomSheetConfig bottomSheetConfig;
 
   final ValueChanged<PhoneNumber>? onInputChanged;
   final ValueChanged<bool>? onInputValidated;
@@ -91,6 +93,7 @@ class InternationalPhoneNumberInput extends StatefulWidget {
   InternationalPhoneNumberInput(
       {Key? key,
       this.selectorConfig = const SelectorConfig(),
+      this.bottomSheetConfig = const BottomSheetConfig(),
       required this.onInputChanged,
       this.onInputValidated,
       this.onSubmit,
@@ -306,7 +309,7 @@ class _InputWidgetState extends State<InternationalPhoneNumberInput> {
         isEnabled: widget.isEnabled,
         autoFocusSearchField: widget.autoFocusSearch,
         isScrollControlled: widget.countrySelectorScrollControlled,
-        useRootNavigatorForBottomSheet: widget.useRootNavigatorForBottomSheet,
+        bottomSheetConfig: widget.bottomSheetConfig,
       ));
     }
 
@@ -414,7 +417,7 @@ class _InputWidgetView
                   isEnabled: widget.isEnabled,
                   autoFocusSearchField: widget.autoFocusSearch,
                   isScrollControlled: widget.countrySelectorScrollControlled,
-                  useRootNavigatorForBottomSheet: widget.useRootNavigatorForBottomSheet,
+                  bottomSheetConfig: widget.bottomSheetConfig,
                 ),
                 SizedBox(
                   height: state.selectorButtonBottomPadding,
