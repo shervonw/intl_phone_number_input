@@ -145,6 +145,7 @@ class SelectorButton extends StatelessWidget {
   Future<Country?> showCountrySelectorBottomSheet(
       BuildContext inheritedContext, List<Country> countries) {
     return showModalBottomSheet(
+      useRootNavigator: true,
       context: inheritedContext,
       clipBehavior: Clip.hardEdge,
       isScrollControlled: isScrollControlled,
