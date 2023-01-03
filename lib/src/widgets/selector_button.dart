@@ -17,6 +17,7 @@ class SelectorButton extends StatelessWidget {
   final String? locale;
   final bool isEnabled;
   final bool isScrollControlled;
+  final bool useRootNavigatorForBottomSheet;
 
   final ValueChanged<Country?> onCountryChanged;
 
@@ -32,6 +33,7 @@ class SelectorButton extends StatelessWidget {
     required this.onCountryChanged,
     required this.isEnabled,
     required this.isScrollControlled,
+    required this.useRootNavigatorForBottomSheet,
   }) : super(key: key);
 
   @override
@@ -145,7 +147,7 @@ class SelectorButton extends StatelessWidget {
   Future<Country?> showCountrySelectorBottomSheet(
       BuildContext inheritedContext, List<Country> countries) {
     return showModalBottomSheet(
-      useRootNavigator: true,
+      useRootNavigator: useRootNavigatorForBottomSheet,
       context: inheritedContext,
       clipBehavior: Clip.hardEdge,
       isScrollControlled: isScrollControlled,
@@ -154,42 +156,44 @@ class SelectorButton extends StatelessWidget {
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(12), topRight: Radius.circular(12))),
       builder: (BuildContext context) {
-        return Stack(children: [
-          GestureDetector(
-            onTap: () => Navigator.pop(context),
-          ),
-          Padding(
-            padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom),
-            child: DraggableScrollableSheet(
-              builder: (BuildContext context, ScrollController controller) {
-                return Directionality(
-                  textDirection: Directionality.of(inheritedContext),
-                  child: Container(
-                    decoration: ShapeDecoration(
-                      color: Theme.of(context).canvasColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(12),
-                          topRight: Radius.circular(12),
+        return SafeArea(
+          child: Stack(children: [
+            GestureDetector(
+              onTap: () => Navigator.pop(context),
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom),
+              child: DraggableScrollableSheet(
+                builder: (BuildContext context, ScrollController controller) {
+                  return Directionality(
+                    textDirection: Directionality.of(inheritedContext),
+                    child: Container(
+                      decoration: ShapeDecoration(
+                        color: Theme.of(context).canvasColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(12),
+                            topRight: Radius.circular(12),
+                          ),
                         ),
                       ),
+                      child: CountrySearchListWidget(
+                        countries,
+                        locale,
+                        searchBoxDecoration: searchBoxDecoration,
+                        scrollController: controller,
+                        showFlags: selectorConfig.showFlags,
+                        useEmoji: selectorConfig.useEmoji,
+                        autoFocus: autoFocusSearchField,
+                      ),
                     ),
-                    child: CountrySearchListWidget(
-                      countries,
-                      locale,
-                      searchBoxDecoration: searchBoxDecoration,
-                      scrollController: controller,
-                      showFlags: selectorConfig.showFlags,
-                      useEmoji: selectorConfig.useEmoji,
-                      autoFocus: autoFocusSearchField,
-                    ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
-          ),
-        ]);
+          ]),
+        );
       },
     );
   }

@@ -86,6 +86,8 @@ class InternationalPhoneNumberInput extends StatefulWidget {
 
   final List<String>? countries;
 
+  final bool useRootNavigatorForBottomSheet;
+
   InternationalPhoneNumberInput(
       {Key? key,
       this.selectorConfig = const SelectorConfig(),
@@ -124,7 +126,8 @@ class InternationalPhoneNumberInput extends StatefulWidget {
       this.focusNode,
       this.cursorColor,
       this.autofillHints,
-      this.countries})
+      this.countries,
+      this.useRootNavigatorForBottomSheet = true})
       : super(key: key);
 
   @override
@@ -303,6 +306,7 @@ class _InputWidgetState extends State<InternationalPhoneNumberInput> {
         isEnabled: widget.isEnabled,
         autoFocusSearchField: widget.autoFocusSearch,
         isScrollControlled: widget.countrySelectorScrollControlled,
+        useRootNavigatorForBottomSheet: widget.useRootNavigatorForBottomSheet,
       ));
     }
 
@@ -410,6 +414,7 @@ class _InputWidgetView
                   isEnabled: widget.isEnabled,
                   autoFocusSearchField: widget.autoFocusSearch,
                   isScrollControlled: widget.countrySelectorScrollControlled,
+                  useRootNavigatorForBottomSheet: widget.useRootNavigatorForBottomSheet,
                 ),
                 SizedBox(
                   height: state.selectorButtonBottomPadding,
